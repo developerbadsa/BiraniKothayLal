@@ -1,6 +1,11 @@
-import { Schema, model, models } from "mongoose";
+import { Schema, model, models, type Model } from "mongoose";
 
-const submissionRateSchema = new Schema(
+export interface SubmissionRateDoc {
+  voterKeyHash: string;
+  lastSubmittedAt: Date;
+}
+
+const submissionRateSchema = new Schema<SubmissionRateDoc>(
   {
     voterKeyHash: { type: String, required: true, unique: true },
     lastSubmittedAt: { type: Date, required: true },
@@ -8,4 +13,5 @@ const submissionRateSchema = new Schema(
   { timestamps: false },
 );
 
-export const SubmissionRate = models.SubmissionRate || model("SubmissionRate", submissionRateSchema);
+export const SubmissionRate =
+  (models.SubmissionRate as Model<SubmissionRateDoc>) || model<SubmissionRateDoc>("SubmissionRate", submissionRateSchema);

@@ -4,13 +4,18 @@ import dynamic from "next/dynamic";
 import { useMemo, useState } from "react";
 import { MosqueCard } from "@/components/MosqueCard";
 import { areas } from "@/i18n/dict";
+import type { HomeDictionary, MosqueItem, TrendingRow } from "@/types/mosque";
 
 const DynamicMap = dynamic(() => import("@/components/MapView").then((m) => m.MapView), { ssr: false });
 
 type Props = {
-  mosques: any[];
-  trending: any;
-  t: any;
+  mosques: MosqueItem[];
+  trending: {
+    topYes: TrendingRow[];
+    topNo: TrendingRow[];
+    mostActive: TrendingRow[];
+  };
+  t: HomeDictionary;
 };
 
 export function HomeTabs({ mosques, trending, t }: Props) {
@@ -36,7 +41,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
   const content = useMemo(() => {
     if (tab === "map") return <DynamicMap mosques={filtered} />;
     if (tab === "trending") {
-      const block = (title: string, rows: any[]) => (
+      const block = (title: string, rows: TrendingRow[]) => (
         <div className="rounded-2xl border bg-white p-4 shadow-soft">
           <h3 className="mb-3 font-semibold">{title}</h3>
           <div className="space-y-2 text-sm">

@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import mongoose from "mongoose";
 import { connectDb } from "@/lib/db";
 import { getVoterKeyHash } from "@/lib/hash";
 import { createMosqueSchema, queryMosqueSchema } from "@/lib/validation";

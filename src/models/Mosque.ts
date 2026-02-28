@@ -1,6 +1,27 @@
-import { Schema, model, models, type InferSchemaType } from "mongoose";
+import { Schema, model, models, type Model } from "mongoose";
 
-const mosqueSchema = new Schema(
+export interface MosqueDoc {
+  name: string;
+  district: "Lalmonirhat";
+  area: string;
+  address: string;
+  location: {
+    type: "Point";
+    coordinates: [number, number];
+  };
+  isVerified: boolean;
+  status: "ACTIVE" | "INACTIVE";
+  aggregates: {
+    yesCount: number;
+    noCount: number;
+    lastVotedAt: Date | null;
+    confidenceScore: number;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const mosqueSchema = new Schema<MosqueDoc>(
   {
     name: { type: String, required: true, trim: true, maxlength: 120 },
     district: { type: String, required: true, enum: ["Lalmonirhat"], default: "Lalmonirhat" },
@@ -25,5 +46,4 @@ const mosqueSchema = new Schema(
 mosqueSchema.index({ location: "2dsphere" });
 mosqueSchema.index({ area: 1, status: 1 });
 
-export type MosqueDoc = InferSchemaType<typeof mosqueSchema> & { _id: string };
-export const Mosque = models.Mosque || model("Mosque", mosqueSchema);
+export const Mosque = (models.Mosque as Model<MosqueDoc>) || model<MosqueDoc>("Mosque", mosqueSchema);

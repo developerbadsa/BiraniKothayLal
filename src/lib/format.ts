@@ -1,4 +1,4 @@
-export function formatTime(date?: Date | null) {
+export function formatTime(date?: Date | string | null) {
   if (!date) return "-";
   return new Date(date).toLocaleString("en-BD", { hour12: true });
 }

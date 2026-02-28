@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { formatTime } from "@/lib/format";
+import type { MosqueItem } from "@/types/mosque";
 
 type Props = {
-  mosque: any;
+  mosque: MosqueItem;
   yesLabel: string;
   noLabel: string;
   openMapsLabel: string;
