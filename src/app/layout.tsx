@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   title: "BiraniKothayLal",
   description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা birani dibe lalmonirhat er khabar birani kothay lalmonirhat iftar birani news",
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     siteName: "BiraniKothayLal",
     title: "BiraniKothayLal",

@@ -224,7 +224,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
         </div>
         {filtered.length > 0 ? (
           <>
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
               {paginated.map((mosque) => (
                 <MosqueCard
                   key={mosque._id.toString()}

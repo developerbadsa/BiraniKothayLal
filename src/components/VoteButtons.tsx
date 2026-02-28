@@ -30,7 +30,9 @@ export function VoteButtons({ mosqueId, compact = false }: Props) {
     window.location.reload();
   };
 
-  const buttonClass = compact ? "rounded-xl px-3 py-2 text-sm font-semibold text-white transition" : "rounded-xl px-4 py-2 text-white";
+  const buttonClass = compact
+    ? "rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition"
+    : "rounded-xl px-4 py-2 text-white";
 
   return (
     <div className="space-y-2">
