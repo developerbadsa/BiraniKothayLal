@@ -1,0 +1,78 @@
+﻿import Link from "next/link";
+import { VoteButtons } from "@/components/VoteButtons";
+import { formatTime } from "@/lib/format";
+import type { MosqueItem } from "@/types/mosque";
+
+type Props = {
+  mosque: MosqueItem;
+  yesLabel: string;
+  noLabel: string;
+  openMapsLabel: string;
+  lastReportLabel: string;
+};
+
+export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastReportLabel }: Props) {
+  const [lng, lat] = mosque.location.coordinates;
+  const totalVotes = mosque.aggregates.yesCount + mosque.aggregates.noCount;
+  const confidence = Math.round((mosque.aggregates.confidenceScore ?? 0) * 100);
+
+  return (
+    <article className="group rounded-3xl border border-orange-100 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+      <div className="flex items-start justify-between gap-3">
+        <div>
+          <p className="mb-2 inline-flex rounded-full bg-orange-50 px-2.5 py-1 text-[11px] font-semibold text-orange-700">কমিউনিটি যাচাই রিপোর্ট</p>
+          <Link className="line-clamp-2 text-lg font-bold text-zinc-900 hover:text-orange-700 hover:underline" href={`/mosque/${mosque._id}`}>
+            {mosque.name}
+          </Link>
+          <p className="mt-1 text-sm font-medium text-zinc-600">{mosque.area}</p>
+          <p className="line-clamp-1 text-sm text-zinc-500">{mosque.address || "ঠিকানা পাওয়া যায় নাই"}</p>
+        </div>
+        <span className="rounded-xl border border-orange-200 bg-orange-50 px-2.5 py-1 text-xs font-semibold text-orange-700">{totalVotes} ভোট</span>
+      </div>
+
+      <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
+        <div className="rounded-2xl border border-orange-200 bg-orange-50 p-3 text-orange-800">
+          <p className="text-xs font-semibold tracking-wide">{yesLabel}</p>
+          <p className="mt-1 text-xl font-extrabold">{mosque.aggregates.yesCount}</p>
+        </div>
+        <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-3 text-zinc-700">
+          <p className="text-xs font-semibold tracking-wide">{noLabel}</p>
+          <p className="mt-1 text-xl font-extrabold">{mosque.aggregates.noCount}</p>
+        </div>
+      </div>
+
+      <div className="mt-4">
+        <div className="mb-1 flex items-center justify-between text-xs text-zinc-500">
+          <p>ভরসার মান</p>
+          <p className="font-semibold text-zinc-700">{confidence}%</p>
+        </div>
+        <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
+          <div className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-500" style={{ width: `${confidence}%` }} />
+        </div>
+      </div>
+
+      <p className="mt-4 text-xs text-zinc-500">
+        {lastReportLabel}: {formatTime(mosque.aggregates.lastVotedAt)}
+      </p>
+
+      <div className="mt-4 grid gap-2 sm:grid-cols-2">
+        <a
+          className="inline-flex items-center justify-center rounded-xl border border-zinc-200 px-3 py-2 text-sm font-semibold text-zinc-700 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700"
+          href={`https://www.google.com/maps?q=${lat},${lng}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {openMapsLabel}
+        </a>
+        <Link className="inline-flex items-center justify-center rounded-xl bg-orange-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-orange-700" href={`/mosque/${mosque._id}`}>
+          বিস্তারিত দেখো
+        </Link>
+      </div>
+
+      <div className="mt-4 border-t border-zinc-100 pt-4">
+        <p className="mb-2 text-xs font-semibold text-zinc-500">এই লোকেশনে বিরানি আছে নাকি?</p>
+        <VoteButtons mosqueId={mosque._id.toString()} compact />
+      </div>
+    </article>
+  );
+}
