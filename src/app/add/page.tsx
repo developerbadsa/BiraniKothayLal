@@ -11,6 +11,7 @@ type GeoSearchResult = {
   display_name: string;
   lat: string;
   lon: string;
+  importance?: number;
 };
 
 const MIN_LAT = 25;
@@ -22,15 +23,34 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function buildLocationQuery(raw: string, selectedArea: string) {
+  const parts = [raw.trim()];
+  if (selectedArea) parts.push(selectedArea);
+  parts.push("Lalmonirhat", "Bangladesh");
+  return parts.filter(Boolean).join(", ");
+}
+
+function rankResult(result: GeoSearchResult, selectedArea: string) {
+  const text = result.display_name.toLowerCase();
+  let score = result.importance ?? 0;
+  if (selectedArea && text.includes(selectedArea.toLowerCase())) score += 4;
+  if (text.includes("lalmonirhat")) score += 3;
+  if (text.includes("bangladesh")) score += 1;
+  return score;
+}
+
 export default function AddPage() {
   const [lat, setLat] = useState(25.9);
   const [lng, setLng] = useState(89.4);
   const [message, setMessage] = useState("");
+  const [locationTouched, setLocationTouched] = useState(false);
+  const [selectedArea, setSelectedArea] = useState("");
 
   const [locationQuery, setLocationQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GeoSearchResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [geoStatus, setGeoStatus] = useState("");
+  const [geoAccuracy, setGeoAccuracy] = useState<number | null>(null);
 
   useEffect(() => {
     const trimmed = locationQuery.trim();
@@ -43,9 +63,9 @@ export default function AddPage() {
     const timer = setTimeout(async () => {
       try {
         setSearching(true);
-        const q = `${trimmed}, Lalmonirhat, Bangladesh`;
+        const q = buildLocationQuery(trimmed, selectedArea);
         const res = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=jsonv2&countrycodes=bd&limit=5&q=${encodeURIComponent(q)}`,
+          `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=bd&limit=6&dedupe=1&bounded=1&viewbox=${MIN_LNG},${MAX_LAT},${MAX_LNG},${MIN_LAT}&q=${encodeURIComponent(q)}`,
           { signal: controller.signal },
         );
         if (!res.ok) {
@@ -53,7 +73,13 @@ export default function AddPage() {
           return;
         }
         const data = (await res.json()) as GeoSearchResult[];
-        setSearchResults(data);
+        const ranked = [...data].sort((a, b) => rankResult(b, selectedArea) - rankResult(a, selectedArea));
+        setSearchResults(ranked);
+        if (ranked[0]) {
+          setLat(clamp(Number(ranked[0].lat), MIN_LAT, MAX_LAT));
+          setLng(clamp(Number(ranked[0].lon), MIN_LNG, MAX_LNG));
+          setGeoStatus("নিকটতম ম্যাচ ম্যাপে দেখানো হইছে। ঠিক থাকলে লিস্ট থেকে সিলেক্ট করো বা পিন ঠিক করো।");
+        }
       } catch {
         if (!controller.signal.aborted) setSearchResults([]);
       } finally {
@@ -65,11 +91,12 @@ export default function AddPage() {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [locationQuery]);
+  }, [locationQuery, selectedArea]);
 
   const pickLocation = (nextLat: number, nextLng: number) => {
     setLat(clamp(nextLat, MIN_LAT, MAX_LAT));
     setLng(clamp(nextLng, MIN_LNG, MAX_LNG));
+    setLocationTouched(true);
   };
 
   const onUseCurrentLocation = () => {
@@ -82,7 +109,8 @@ export default function AddPage() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         pickLocation(position.coords.latitude, position.coords.longitude);
-        setGeoStatus("তোমার বর্তমান লোকেশন ধরা গেছে। চাইলে পিন টেনে ঠিক কইরা নাও।");
+        setGeoAccuracy(position.coords.accuracy ?? null);
+        setGeoStatus("তোমার বর্তমান লোকেশন ধরা গেছে। চাইলে পিন টেনে ঠিক করি নাও।");
       },
       (error) => {
         if (error.code === 1) {
@@ -96,15 +124,20 @@ export default function AddPage() {
   };
 
   const coordinateText = useMemo(() => `অক্ষাংশ: ${lat.toFixed(6)} | দ্রাঘিমাংশ: ${lng.toFixed(6)}`, [lat, lng]);
+  const canSubmit = locationTouched;
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!locationTouched) {
+      setMessage("আগে ম্যাপে সঠিক লোকেশন ঠিক করো।");
+      return;
+    }
+
     const form = new FormData(e.currentTarget);
     const payload = {
-      name: String(form.get("name")),
+      name: String(form.get("name") || "").trim(),
       area: String(form.get("area")),
-      address: String(form.get("address") || ""),
-      notes: String(form.get("notes") || ""),
+      address: String(form.get("address") || "").trim(),
       lat,
       lng,
     };
@@ -120,12 +153,12 @@ export default function AddPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">লোকেশন যোগ দাও</h1>
+      <h1 className="text-2xl font-semibold">লোকেশন যোগ দেও</h1>
       <form className="space-y-4 rounded-2xl border border-orange-100 bg-white p-4 shadow-soft" onSubmit={onSubmit}>
-        <input className="w-full rounded-xl border border-zinc-200 p-2" name="name" required placeholder="মসজিদের নাম" />
-        <select className="w-full rounded-xl border border-zinc-200 p-2" name="area" required defaultValue="">
+        <input className="w-full rounded-xl border border-zinc-200 p-2" name="name" required minLength={3} maxLength={80} placeholder="মসজিদের নাম" />
+        <select className="w-full rounded-xl border border-zinc-200 p-2" name="area" required value={selectedArea} onChange={(e) => setSelectedArea(e.target.value)}>
           <option value="" disabled>
-            এলাকা বাছো
+            এলাকা জানান
           </option>
           {areas.map((a) => (
             <option key={a} value={a}>
@@ -133,19 +166,18 @@ export default function AddPage() {
             </option>
           ))}
         </select>
-        <input className="w-full rounded-xl border border-zinc-200 p-2" name="address" placeholder="ঠিকানা (চাইলে)" />
-        <textarea className="w-full rounded-xl border border-zinc-200 p-2" name="notes" placeholder="নোট (চাইলে)" />
+        <input className="w-full rounded-xl border border-zinc-200 p-2" name="address" maxLength={140} placeholder="ঠিকানা (চাইলে)" />
 
         <div className="rounded-2xl border border-orange-100 bg-orange-50/40 p-3">
           <label className="mb-1 block text-sm font-medium text-zinc-700" htmlFor="location-search">
-            নাম/বাজার/রোড লিখো, ম্যাপ অটো আপডেট হবে
+            নাম/বাজার/রোড লিখো, তারপর সঠিক পিনে সেট করো
           </label>
           <input
             id="location-search"
             value={locationQuery}
             onChange={(e) => setLocationQuery(e.target.value)}
             className="w-full rounded-xl border border-orange-200 bg-white p-2"
-            placeholder="এলাকার নাম লিখো"
+            placeholder="এলাকা/বাজার/রোড লিখো"
           />
           <div className="mt-2 flex flex-wrap gap-2">
             <button
@@ -153,11 +185,16 @@ export default function AddPage() {
               onClick={onUseCurrentLocation}
               className="rounded-xl border border-orange-300 bg-orange-50 px-3 py-2 text-sm font-semibold text-orange-700 hover:bg-orange-100"
             >
-              আমার বর্তমান লোকেশন ধরো
+              আমার বর্তমান লোকেশন ব্যবহার করো
             </button>
             {searching && <p className="text-sm text-zinc-500">খুঁজতেছি...</p>}
           </div>
           {geoStatus && <p className="mt-2 text-sm text-zinc-600">{geoStatus}</p>}
+          {geoAccuracy !== null && (
+            <p className="mt-1 text-xs text-zinc-500">
+              জিপিএস এক্যুরেসি: প্রায় {Math.round(geoAccuracy)} মিটার {geoAccuracy > 100 ? "(পিন ম্যানুয়ালি ঠিক করা ভালো)" : ""}
+            </p>
+          )}
           {searchResults.length > 0 && (
             <div className="mt-2 max-h-44 space-y-1 overflow-auto rounded-xl border border-orange-100 bg-white p-2">
               {searchResults.map((r) => (
@@ -168,6 +205,7 @@ export default function AddPage() {
                     pickLocation(Number(r.lat), Number(r.lon));
                     setLocationQuery(r.display_name);
                     setSearchResults([]);
+                    setGeoStatus("লোকেশন সিলেক্ট করা হয়েছে। চাইলে পিন টেনে আরো ঠিক করো।");
                   }}
                   className="block w-full rounded-lg px-2 py-1.5 text-left text-sm text-zinc-700 hover:bg-orange-50"
                 >
@@ -178,35 +216,8 @@ export default function AddPage() {
           )}
         </div>
 
-        <div className="grid gap-3 sm:grid-cols-2">
-          <label className="text-sm text-zinc-700">
-            অক্ষাংশ
-            <input
-              type="number"
-              step="0.000001"
-              min={MIN_LAT}
-              max={MAX_LAT}
-              value={lat}
-              onChange={(e) => pickLocation(Number(e.target.value), lng)}
-              className="mt-1 w-full rounded-xl border border-zinc-200 p-2"
-            />
-          </label>
-          <label className="text-sm text-zinc-700">
-            দ্রাঘিমাংশ
-            <input
-              type="number"
-              step="0.000001"
-              min={MIN_LNG}
-              max={MAX_LNG}
-              value={lng}
-              onChange={(e) => pickLocation(lat, Number(e.target.value))}
-              className="mt-1 w-full rounded-xl border border-zinc-200 p-2"
-            />
-          </label>
-        </div>
-
         <p className="text-sm text-zinc-600">{coordinateText}</p>
-        <p className="text-xs text-zinc-500">টিপস: ম্যাপে ক্লিক কইরা বা পিন টানিয়া ঠিক জায়গা বসাও।</p>
+        <p className="text-xs text-zinc-500">টিপস: ম্যাপে ক্লিক বা পিন টেনে মসজিদের গেইটের কাছে পিন বসাও।</p>
 
         <DynamicMapPicker
           lat={lat}
@@ -216,9 +227,10 @@ export default function AddPage() {
           }}
         />
 
-        <button className="rounded-xl bg-orange-600 px-4 py-2 text-white hover:bg-orange-700" type="submit">
+        <button className="rounded-xl bg-orange-600 px-4 py-2 text-white hover:bg-orange-700 disabled:cursor-not-allowed disabled:opacity-60" type="submit" disabled={!canSubmit}>
           সাবমিট দাও
         </button>
+        {!locationTouched && <p className="text-xs text-orange-700">সাবমিটের আগে ম্যাপে লোকেশন একবার ঠিক করে নাও।</p>}
         {message && <p className="text-sm text-zinc-600">{message}</p>}
       </form>
     </div>

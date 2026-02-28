@@ -8,7 +8,7 @@ import logo from './../../public/logo.png';
 
 export const metadata: Metadata = {
   title: "BiraniKothayLal",
-  description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
+  description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা birani dibe lalmonirhat er khabar birani kothay lalmonirhat iftar birani news",
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   openGraph: {
     siteName: "BiraniKothayLal",
@@ -47,13 +47,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             </Link>
             <div className="flex items-center gap-3">
               <Link href="/about" className="text-sm font-medium text-zinc-700">
-                হামার কথা
+                About Us
               </Link>
               <Link
                 href="/add"
                 className="rounded-xl border border-orange-200 bg-orange-50 px-3 py-1.5 text-sm font-medium text-orange-700 hover:bg-orange-100"
               >
-                লোকেশন যোগ দাও
+                বিড়ানির খবর দিন
               </Link>
             </div>
           </div>

@@ -173,11 +173,11 @@ export function HomeTabs({ mosques, trending, t }: Props) {
 
       <div className="grid gap-3 sm:grid-cols-3">
         <div className="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
-          <p className="text-xs font-semibold tracking-wide text-orange-700">দেখতাছো লোকেশন</p>
+          <p className="text-xs font-semibold tracking-wide text-orange-700">কয় জায়জায় বিরানি আছে</p>
           <p className="mt-1 text-2xl font-extrabold text-orange-900">{filtered.length}</p>
         </div>
         <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
-          <p className="text-xs font-semibold tracking-wide text-zinc-600">কভার এলাকা</p>
+          <p className="text-xs font-semibold tracking-wide text-zinc-600">কয়টা এলাকা</p>
           <p className="mt-1 text-2xl font-extrabold text-zinc-900">{uniqueAreas}</p>
         </div>
         <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
