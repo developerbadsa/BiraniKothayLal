@@ -14,7 +14,7 @@ type Props = {
 };
 
 export function HomeTabs({ mosques, trending, t }: Props) {
-  const [tab, setTab] = useState<"list" | "map" | "trending">("list");
+  const [tab, setTab] = useState<"list" | "map" | "trending">("map");
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("");
 
