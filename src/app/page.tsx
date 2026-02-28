@@ -44,7 +44,7 @@ export default async function HomePage() {
     <div className="space-y-6">
       <section className="overflow-hidden rounded-3xl border border-orange-200 bg-gradient-to-br from-stone-100 via-orange-50 to-amber-50 p-7 text-zinc-900 shadow-xl">
         <p className="mb-2 inline-flex rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-semibold tracking-wide text-orange-700">কমিউনিটি লাইভ খবর</p>
-        <h1 className="text-3xl font-extrabold leading-tight md:text-4xl">আজ কোটে বিরানি/ইফতার দেবে</h1>
+        <h1 className="text-3xl font-extrabold leading-tight md:text-4xl">আজক্যা কোটে বিরানি/ইফতার দেবে</h1>
         <p className="mt-3 max-w-3xl text-sm text-zinc-700 md:text-base">
           তাড়াতাড়ি উকট্যাঁন,নিচে সব রিপোর্ট দেখো, ভোট দাও, আর ম্যাপে গিয়ে লোকেশন মিলি নেও।
         </p>

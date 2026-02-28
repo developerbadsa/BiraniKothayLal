@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { areas } from "@/i18n/dict";
 
 const DynamicMapPicker = dynamic(() => import("@/components/MapPicker").then((m) => m.MapPicker), { ssr: false });
@@ -23,6 +24,10 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value));
 }
 
+function isWithinServiceArea(lat: number, lng: number) {
+  return lat >= MIN_LAT && lat <= MAX_LAT && lng >= MIN_LNG && lng <= MAX_LNG;
+}
+
 function buildLocationQuery(raw: string, selectedArea: string) {
   const parts = [raw.trim()];
   if (selectedArea) parts.push(selectedArea);
@@ -40,11 +45,13 @@ function rankResult(result: GeoSearchResult, selectedArea: string) {
 }
 
 export default function AddPage() {
+  const router = useRouter();
   const [lat, setLat] = useState(25.9);
   const [lng, setLng] = useState(89.4);
   const [message, setMessage] = useState("");
   const [locationTouched, setLocationTouched] = useState(false);
   const [selectedArea, setSelectedArea] = useState("");
+  const [showSuccessPopup, setShowSuccessPopup] = useState(false);
 
   const [locationQuery, setLocationQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GeoSearchResult[]>([]);
@@ -100,6 +107,12 @@ export default function AddPage() {
   };
 
   const onUseCurrentLocation = () => {
+    const isLocalhost = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
+    if (!window.isSecureContext && !isLocalhost) {
+      setGeoStatus("Current location পেতে HTTPS লাগে। এই সাইটটা HTTPS এ খুলে আবার চেষ্টা দাও।");
+      return;
+    }
+
     if (!("geolocation" in navigator)) {
       setGeoStatus("এই ব্রাউজারে লোকেশন ধরা যায় না।");
       return;
@@ -108,13 +121,29 @@ export default function AddPage() {
     setGeoStatus("লোকেশন পারমিশন চাইতেছি...");
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        pickLocation(position.coords.latitude, position.coords.longitude);
+        const rawLat = position.coords.latitude;
+        const rawLng = position.coords.longitude;
+        const inArea = isWithinServiceArea(rawLat, rawLng);
+
+        pickLocation(rawLat, rawLng);
         setGeoAccuracy(position.coords.accuracy ?? null);
-        setGeoStatus("তোমার বর্তমান লোকেশন ধরা গেছে। চাইলে পিন টেনে ঠিক করি নাও।");
+        setGeoStatus(
+          inArea
+            ? "তোমার বর্তমান লোকেশন ধরা গেছে। চাইলে পিন টেনে ঠিক করি নাও।"
+            : "তোমার বর্তমান লোকেশন সার্ভিস এলাকার বাইরে। তাই ম্যাপে নিকটতম allowed boundary দেখানো হচ্ছে, পিন টেনে সঠিক লোকেশন ঠিক করো।",
+        );
       },
       (error) => {
         if (error.code === 1) {
           setGeoStatus("লোকেশন পারমিশন বন্ধ আছে। পারমিশন দিয়া আবার দাও।");
+          return;
+        }
+        if (error.code === 2) {
+          setGeoStatus("লোকেশন provider (GPS/Network) থেকে অবস্থান পাওয়া যায় নাই। একটু পরে আবার চেষ্টা দাও।");
+          return;
+        }
+        if (error.code === 3) {
+          setGeoStatus("লোকেশন নিতে বেশি সময় লাগছে (timeout)। নেট/GPS অন রেখে আবার চেষ্টা দাও।");
           return;
         }
         setGeoStatus("লোকেশন ধরা গেল না, আবার চেষ্টা দাও।");
@@ -148,7 +177,15 @@ export default function AddPage() {
       body: JSON.stringify(payload),
     });
     const data = await res.json();
-    setMessage(res.ok ? "মসজিদের লোকেশন যোগ হইছে।" : data.error ?? "কাজটা হয় নাই।");
+    if (res.ok) {
+      setShowSuccessPopup(true);
+      setMessage("");
+      setTimeout(() => {
+        router.push("/");
+      }, 1400);
+      return;
+    }
+    setMessage(data.error ?? "কাজটা হয় নাই।");
   };
 
   return (
@@ -233,6 +270,14 @@ export default function AddPage() {
         {!locationTouched && <p className="text-xs text-orange-700">সাবমিটের আগে ম্যাপে লোকেশন একবার ঠিক করে নাও।</p>}
         {message && <p className="text-sm text-zinc-600">{message}</p>}
       </form>
+      {showSuccessPopup && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+          <div className="w-full max-w-sm rounded-2xl border border-orange-200 bg-white p-5 text-center shadow-xl">
+            <p className="text-lg font-bold text-orange-700">সফল হয়েছে</p>
+            <p className="mt-2 text-sm text-zinc-700">মসজিদের লোকেশন যোগ হয়েছে। হোম পেজে নেওয়া হচ্ছে...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -18,6 +18,29 @@
       <p className="text-zinc-700">
         তোমার যদি নতুন আইডিয়া থাকে, বা কুন ভুল দেখো, হেইডা জানাইও। সগাই মিলে সাইটডা আরো ভাল করি তোলমো
       </p>
+      <div className="rounded-xl border border-orange-100 bg-orange-50/50 p-4">
+        <h2 className="text-lg font-semibold text-zinc-900">যোগাযোগ</h2>
+        <p className="mt-2 text-zinc-700">
+          <span className="font-medium">নাম:</span> Rahim Badsa
+        </p>
+        <p className="text-zinc-700">
+          <span className="font-medium">Email:</span>{" "}
+          <a className="text-orange-700 underline hover:text-orange-800" href="mailto:rahimbadsa723@gmail.com">
+            rahimbadsa723@gmail.com
+          </a>
+        </p>
+        <p className="text-zinc-700">
+          <span className="font-medium">Facebook:</span>{" "}
+          <a
+            className="text-orange-700 underline hover:text-orange-800"
+            href="https://www.facebook.com/rahimbadsa723"
+            target="_blank"
+            rel="noreferrer"
+          >
+            facebook.com/rahimbadsa723
+          </a>
+        </p>
+      </div>
     </div>
   );
 }
