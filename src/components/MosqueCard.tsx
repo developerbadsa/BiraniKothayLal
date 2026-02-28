@@ -43,7 +43,7 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
 
       <div className="mt-4">
         <div className="mb-1 flex items-center justify-between text-xs text-zinc-500">
-          <p>ভরসার মান</p>
+          <p>নির্ভরের মান</p>
           <p className="font-semibold text-zinc-700">{confidence}%</p>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-zinc-100">
@@ -70,7 +70,7 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
       </div>
 
       <div className="mt-4 border-t border-zinc-100 pt-4">
-        <p className="mb-2 text-xs font-semibold text-zinc-500">এই লোকেশনে বিরানি আছে নাকি?</p>
+        <p className="mb-2 text-xs font-semibold text-zinc-500">এই লোকেশনে বিরানি আছে নাকি? (সত্যি তোমরা দেখছেন?)</p>
         <VoteButtons mosqueId={mosque._id.toString()} compact />
       </div>
     </article>

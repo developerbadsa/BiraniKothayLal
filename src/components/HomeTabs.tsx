@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { MosqueCard } from "@/components/MosqueCard";
 import { areas } from "@/i18n/dict";
 import type { HomeDictionary, MosqueItem, TrendingRow } from "@/types/mosque";
@@ -29,6 +29,8 @@ type TrendingBlockProps = {
   rows: TrendingRow[];
   tone: "orange" | "stone" | "zinc";
 };
+
+const ITEMS_PER_PAGE = 20;
 
 function suggestionTypeLabel(type: Suggestion["type"]) {
   if (type === "name") return "নাম";
@@ -69,6 +71,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
   const [query, setQuery] = useState("");
   const [area, setArea] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const [page, setPage] = useState(1);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase();
@@ -108,6 +111,20 @@ export function HomeTabs({ mosques, trending, t }: Props) {
 
   const uniqueAreas = useMemo(() => new Set(filtered.map((m) => m.area)).size, [filtered]);
   const trendingTotal = trending.topYes.length + trending.topNo.length + trending.mostActive.length;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
+  const pageStart = (page - 1) * ITEMS_PER_PAGE;
+  const paginated = filtered.slice(pageStart, pageStart + ITEMS_PER_PAGE);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, area]);
+
+  useEffect(() => {
+    if (page > totalPages) setPage(totalPages);
+  }, [page, totalPages]);
+
+  const startItem = filtered.length === 0 ? 0 : pageStart + 1;
+  const endItem = Math.min(pageStart + ITEMS_PER_PAGE, filtered.length);
 
   const onSuggestionPick = (value: string) => {
     setQuery(value);
@@ -201,21 +218,58 @@ export function HomeTabs({ mosques, trending, t }: Props) {
       <section id="list-section" className="space-y-3">
         <div className="flex items-center justify-between gap-3">
           <h3 className="text-lg font-bold text-zinc-900">{t.list}</h3>
-          <p className="text-sm text-zinc-500">মোট {filtered.length}টা ফল</p>
+          <p className="text-sm text-zinc-500">
+            মোট {filtered.length}টা ফল {filtered.length > 0 ? `(দেখাচ্ছে ${startItem}-${endItem})` : ""}
+          </p>
         </div>
         {filtered.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            {filtered.map((mosque) => (
-              <MosqueCard
-                key={mosque._id.toString()}
-                mosque={mosque}
-                yesLabel={t.yes}
-                noLabel={t.no}
-                openMapsLabel={t.openMaps}
-                lastReportLabel={t.lastReport}
-              />
-            ))}
-          </div>
+          <>
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {paginated.map((mosque) => (
+                <MosqueCard
+                  key={mosque._id.toString()}
+                  mosque={mosque}
+                  yesLabel={t.yes}
+                  noLabel={t.no}
+                  openMapsLabel={t.openMaps}
+                  lastReportLabel={t.lastReport}
+                />
+              ))}
+            </div>
+            {filtered.length > ITEMS_PER_PAGE && (
+              <div className="flex flex-wrap items-center gap-2 pt-1">
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page === 1}
+                  className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  আগের
+                </button>
+                {Array.from({ length: totalPages }).map((_, idx) => {
+                  const pageNumber = idx + 1;
+                  return (
+                    <button
+                      key={pageNumber}
+                      type="button"
+                      onClick={() => setPage(pageNumber)}
+                      className={`rounded-lg px-3 py-1.5 text-sm ${pageNumber === page ? "bg-orange-600 text-white" : "border border-zinc-200 bg-white text-zinc-700"}`}
+                    >
+                      {pageNumber}
+                    </button>
+                  );
+                })}
+                <button
+                  type="button"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page === totalPages}
+                  className="rounded-lg border border-zinc-200 bg-white px-3 py-1.5 text-sm text-zinc-700 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  পরের
+                </button>
+              </div>
+            )}
+          </>
         ) : (
           <div className="rounded-2xl border border-orange-200 bg-orange-50 p-4 text-sm text-orange-800">
             এই ফিল্টারে কোন লোকেশন পাওয়া গেল না।
