@@ -44,9 +44,9 @@ export default async function HomePage() {
     <div className="space-y-6">
       <section className="overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-700 via-teal-700 to-cyan-700 p-7 text-white shadow-xl">
         <p className="mb-2 inline-flex rounded-full bg-white/20 px-3 py-1 text-xs font-semibold tracking-wide">কমিউনিটি লাইভ আপডেট</p>
-        <h1 className="text-3xl font-extrabold leading-tight md:text-4xl">আজকে কোথায় বিরিয়ানি/ইফতার পাওয়া যাচ্ছে?</h1>
+        <h1 className="text-3xl font-extrabold leading-tight md:text-4xl">আজকে কোন মসজিদে বিরিয়ানি/ইফতার পাওয়া যাচ্ছে?</h1>
         <p className="mt-3 max-w-3xl text-sm text-emerald-50 md:text-base">
-          পুরো প্ল্যাটফর্ম এখন শুধুই বাংলায়। দ্রুত সার্চ করুন, ম্যাপে লোকেশন দেখুন, আর আপনার ভোট দিয়ে সঠিক তথ্য যাচাই করুন।
+          দ্রুত সার্চ করুন, সুন্দর কার্ড ভিউতে সব রিপোর্ট দেখুন, ভোট দিন, আর এক ক্লিকে ম্যাপে গিয়ে লোকেশন যাচাই করুন।
         </p>
         <div className="mt-5 grid gap-3 md:grid-cols-3">
           {stats.map((item) => (
@@ -62,7 +62,7 @@ export default async function HomePage() {
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-xl font-bold text-slate-900">লাইভ ভেরিফিকেশন সেন্টার</h2>
-            <p className="text-sm text-slate-600">লোকেশনকে সুন্দরভাবে দেখতে লিস্ট, ম্যাপ ও ট্রেন্ডিং—সব একসাথে।</p>
+            <p className="text-sm text-slate-600">মডার্ন কার্ডে প্রতিটি মসজিদের ভোট অবস্থা, কনফিডেন্স স্কোর, এবং দ্রুত অ্যাকশন একসাথে দেখুন।</p>
           </div>
         </div>
         <HomeTabs mosques={JSON.parse(JSON.stringify(mosques))} trending={JSON.parse(JSON.stringify(trending))} t={t} />

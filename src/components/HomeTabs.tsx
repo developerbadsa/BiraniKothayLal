@@ -56,7 +56,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
     }
 
     return (
-      <div className="grid gap-4">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {filtered.map((mosque) => (
           <MosqueCard
             key={mosque._id.toString()}
@@ -90,6 +90,10 @@ export function HomeTabs({ mosques, trending, t }: Props) {
           <option value="">{t.allAreas}</option>
           {areas.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
+      </div>
+      <div className="rounded-2xl border border-emerald-100 bg-emerald-50/60 p-3 text-sm text-emerald-900">
+        <span className="font-semibold">{filtered.length}</span> টি লোকেশন দেখানো হচ্ছে।
+        ভোট দিন ও লোকেশন ওপেন করে দ্রুত নিশ্চিত করুন।
       </div>
       <div className="flex flex-wrap gap-2">
         {tabs.map((x) => (

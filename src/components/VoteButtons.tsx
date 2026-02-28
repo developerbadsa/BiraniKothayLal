@@ -2,7 +2,12 @@
 
 import { useState } from "react";
 
-export function VoteButtons({ mosqueId }: { mosqueId: string }) {
+type Props = {
+  mosqueId: string;
+  compact?: boolean;
+};
+
+export function VoteButtons({ mosqueId, compact = false }: Props) {
   const [message, setMessage] = useState("");
 
   const vote = async (voteType: "YES" | "NO") => {
@@ -14,24 +19,28 @@ export function VoteButtons({ mosqueId }: { mosqueId: string }) {
     const data = await res.json();
     if (!res.ok && data.nextAllowedAt) {
       const mins = Math.max(1, Math.ceil((new Date(data.nextAllowedAt).getTime() - Date.now()) / 60000));
-      setMessage(`You voted recently. Try again in ${mins} min`);
+      setMessage(`আপনি কিছুক্ষণ আগে ভোট দিয়েছেন। ${mins} মিনিট পরে আবার চেষ্টা করুন।`);
       return;
     }
     if (!res.ok) {
-      setMessage(data.error ?? "Vote failed");
+      setMessage(data.error ?? "ভোট দেওয়া যায়নি");
       return;
     }
-    setMessage("Vote submitted.");
+    setMessage("ভোট সাবমিট হয়েছে। ধন্যবাদ!");
     window.location.reload();
   };
 
+  const buttonClass = compact
+    ? "rounded-xl px-3 py-2 text-sm font-semibold text-white transition"
+    : "rounded-xl px-4 py-2 text-white";
+
   return (
     <div className="space-y-2">
-      <div className="flex gap-2">
-        <button className="rounded-xl bg-emerald-600 px-4 py-2 text-white" onClick={() => vote("YES")}>YES</button>
-        <button className="rounded-xl bg-rose-600 px-4 py-2 text-white" onClick={() => vote("NO")}>NO</button>
+      <div className="grid grid-cols-2 gap-2">
+        <button className={`${buttonClass} bg-emerald-600 hover:bg-emerald-700`} onClick={() => vote("YES")}>হ্যাঁ</button>
+        <button className={`${buttonClass} bg-rose-600 hover:bg-rose-700`} onClick={() => vote("NO")}>না</button>
       </div>
-      {message && <p className="text-sm text-slate-600">{message}</p>}
+      {message && <p className="text-xs text-slate-600">{message}</p>}
     </div>
   );
 }
