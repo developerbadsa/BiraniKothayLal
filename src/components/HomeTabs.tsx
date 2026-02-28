@@ -75,22 +75,27 @@ export function HomeTabs({ mosques, trending, t }: Props) {
     <section className="space-y-4">
       <div className="grid gap-2 md:grid-cols-3">
         <input
-          aria-label="Search"
+          aria-label="খোঁজ করুন"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={t.search}
-          className="rounded-xl border bg-white px-3 py-2"
+          className="rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-3 outline-none ring-emerald-300 transition focus:ring"
         />
-        <select aria-label="Area filter" value={area} onChange={(e) => setArea(e.target.value)} className="rounded-xl border bg-white px-3 py-2">
+        <select
+          aria-label="এলাকা ফিল্টার"
+          value={area}
+          onChange={(e) => setArea(e.target.value)}
+          className="rounded-2xl border border-emerald-100 bg-emerald-50/60 px-4 py-3 outline-none ring-emerald-300 transition focus:ring"
+        >
           <option value="">{t.allAreas}</option>
           {areas.map((a) => <option key={a} value={a}>{a}</option>)}
         </select>
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {tabs.map((x) => (
           <button
             key={x.key}
-            className={`rounded-xl border px-4 py-2 text-sm ${tab === x.key ? "bg-slate-900 text-white" : "bg-white"}`}
+            className={`rounded-full border px-4 py-2 text-sm font-medium transition ${tab === x.key ? "border-emerald-700 bg-emerald-700 text-white" : "border-emerald-100 bg-white text-slate-700 hover:border-emerald-200 hover:bg-emerald-50"}`}
             onClick={() => setTab(x.key)}
           >
             {x.label}
