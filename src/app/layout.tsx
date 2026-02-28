@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Link from "next/link";
-import { LanguageToggle } from "@/components/LanguageToggle";
 import { getLang } from "@/lib/lang";
 import { env } from "@/lib/env";
 
@@ -39,13 +38,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang={lang}>
       <body>
-        <header className="sticky top-0 z-10 border-b bg-white/90 backdrop-blur">
+        <header className="sticky top-0 z-10 border-b border-emerald-100 bg-white/95 backdrop-blur">
           <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-            <Link href="/" className="text-xl font-bold">BiraniKothayLal</Link>
+            <Link href="/" className="text-xl font-black text-emerald-700">BiraniKothayLal</Link>
             <div className="flex items-center gap-3">
-              <Link href="/about" className="text-sm text-slate-700">About</Link>
-              <Link href="/add" className="rounded-xl border px-3 py-1.5 text-sm">Add Mosque</Link>
-              <LanguageToggle current={lang} />
+              <Link href="/about" className="text-sm font-medium text-slate-700">সম্পর্কে</Link>
+              <Link href="/add" className="rounded-xl border border-emerald-200 px-3 py-1.5 text-sm font-medium text-emerald-700">লোকেশন যোগ করুন</Link>
             </div>
           </div>
         </header>
