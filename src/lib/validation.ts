@@ -22,5 +22,5 @@ export const voteSchema = z.object({
 });
 
 export const trendingSchema = z.object({
-  hours: z.coerce.number().int().min(1).max(48).default(6),
+  hours: z.coerce.number().int().min(1).max(48).default(24),
 });

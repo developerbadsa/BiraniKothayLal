@@ -1,6 +1,6 @@
 export function formatTime(date?: Date | string | null) {
   if (!date) return "-";
-  return new Date(date).toLocaleString("en-BD", { hour12: true });
+  return new Date(date).toLocaleString("en-BD", { hour12: true, timeZone: "Asia/Dhaka" });
 }
 
 export function minsUntil(date: Date) {

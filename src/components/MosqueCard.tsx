@@ -17,7 +17,7 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
   const confidence = Math.round((mosque.aggregates.confidenceScore ?? 0) * 100);
 
   return (
-    <article className="group rounded-2xl border-4 border-orange-300 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <article className="group rounded-2xl border border-orange-200 bg-white p-3.5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md md:p-4">
       <div className="flex items-start justify-between gap-2.5">
         <div>
           <p className="mb-1.5 inline-flex rounded-full bg-orange-50 px-2 py-0.5 text-[10px] font-semibold text-orange-700">কমিউনিটি যাচাই</p>
@@ -57,14 +57,14 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
 
       <div className="mt-3 grid gap-2 sm:grid-cols-2">
         <a
-          className="inline-flex items-center justify-center rounded-lg border border-zinc-200 px-3 py-1.5 text-xs font-semibold text-zinc-700 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700"
+          className="inline-flex min-h-9 items-center justify-center rounded-lg border border-zinc-200 px-3 py-2 text-xs font-semibold text-zinc-700 transition hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700"
           href={`https://www.google.com/maps?q=${lat},${lng}`}
           target="_blank"
           rel="noreferrer"
         >
           {openMapsLabel}
         </a>
-        <Link className="inline-flex items-center justify-center rounded-lg bg-orange-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-orange-700" href={`/mosque/${mosque._id}`}>
+        <Link className="inline-flex min-h-9 items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-orange-700" href={`/mosque/${mosque._id}`}>
           বিস্তারিত দেখো
         </Link>
       </div>

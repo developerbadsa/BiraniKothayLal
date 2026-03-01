@@ -132,10 +132,10 @@ export function HomeTabs({ mosques, trending, t }: Props) {
   };
 
   return (
-    <section className="space-y-6">
+    <section className="space-y-4 md:space-y-6">
       <div className="grid gap-2 md:grid-cols-3">
         <div className="relative md:col-span-2">
-          <div className="flex items-center gap-2 rounded-2xl border border-orange-200 bg-orange-50/70 p-1.5">
+          <div className="flex flex-col gap-2 rounded-2xl border border-orange-200 bg-orange-50/70 p-1.5 sm:flex-row sm:items-center">
             <input
               aria-label="মসজিদ খোঁজ"
               value={query}
@@ -150,7 +150,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
             />
             <a
               href="#list-section"
-              className="inline-flex shrink-0 items-center rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-700"
+              className="inline-flex w-full shrink-0 items-center justify-center rounded-xl bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-orange-700 sm:w-auto"
             >
               খোঁজো
             </a>
@@ -177,7 +177,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
           aria-label="এলাকা বাছাই"
           value={area}
           onChange={(e) => setArea(e.target.value)}
-          className="rounded-2xl border border-orange-200 bg-orange-50/70 px-4 py-3 outline-none ring-orange-300 transition focus:ring"
+          className="w-full rounded-2xl border border-orange-200 bg-orange-50/70 px-4 py-3 outline-none ring-orange-300 transition focus:ring"
         >
           <option value="">{t.allAreas}</option>
           {areas.map((a) => (
@@ -188,7 +188,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
         </select>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-2 sm:grid-cols-3 md:gap-3">
         <div className="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
           <p className="text-xs font-semibold tracking-wide text-orange-700">কয় জায়জায় বিরানি আছে</p>
           <p className="mt-1 text-2xl font-extrabold text-orange-900">{filtered.length}</p>
@@ -203,20 +203,20 @@ export function HomeTabs({ mosques, trending, t }: Props) {
         </div>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <a href="#list-section" className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+      <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1">
+        <a href="#list-section" className="shrink-0 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
           {t.list}
         </a>
-        <a href="#map-section" className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+        <a href="#map-section" className="shrink-0 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
           {t.map}
         </a>
-        <a href="#trending-section" className="rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
+        <a href="#trending-section" className="shrink-0 rounded-full border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-700 transition hover:bg-zinc-50">
           {t.trending}
         </a>
       </div>
 
       <section id="list-section" className="space-y-3">
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
           <h3 className="text-lg font-bold text-zinc-900">{t.list}</h3>
           <p className="text-sm text-zinc-500">
             মোট {filtered.length}টা ফল {filtered.length > 0 ? `(দেখাচ্ছে ${startItem}-${endItem})` : ""}
@@ -237,7 +237,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
               ))}
             </div>
             {filtered.length > ITEMS_PER_PAGE && (
-              <div className="flex flex-wrap items-center gap-2 pt-1">
+              <div className="-mx-1 flex items-center gap-2 overflow-x-auto px-1 pt-1">
                 <button
                   type="button"
                   onClick={() => setPage((p) => Math.max(1, p - 1))}

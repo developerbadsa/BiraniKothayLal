@@ -23,7 +23,7 @@ export function VoteButtons({ mosqueId, compact = false }: Props) {
       return;
     }
     if (!res.ok) {
-      setMessage("ভোট নেয়া গেল না");
+      setMessage(data?.error ?? "ভোট নেয়া গেল না");
       return;
     }
     setMessage("ভোট ধরা হইছে, ধন্যবাদ।");

@@ -1,15 +1,21 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import "./globals.css";
-import Link from "next/link";
-import Image from "next/image";
 import { getLang } from "@/lib/lang";
 import { env } from "@/lib/env";
-import logo from './../../public/logo.png';
+import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
   title: "BiraniKothayLal",
   description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা birani dibe lalmonirhat er khabar birani kothay lalmonirhat iftar birani news",
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
+  alternates: {
+    canonical: "/",
+  },
+  keywords: ["BiraniKothayLal", "Lalmonirhat", "Iftar", "Sehri", "Mosque", "Bangladesh", "Community Vote", "Ramadan"],
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: "/logo.png",
     shortcut: "/logo.png",
@@ -21,6 +27,13 @@ export const metadata: Metadata = {
     description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
     url: env.NEXT_PUBLIC_APP_URL,
     type: "website",
+    images: [{ url: "/logo.png", width: 512, height: 512, alt: "BiraniKothayLal" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "BiraniKothayLal",
+    description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
+    images: ["/logo.png"],
   },
 };
 
@@ -44,26 +57,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={lang}>
-      <body>
-        <header className="sticky top-0 z-10 border-b border-orange-100 bg-white/95 backdrop-blur">
-          <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
-            <Link href="/" className="text-xl font-black h">
-              <Image src={logo} alt="BiraniKothayLal Logo" width={130} height={0} />
-            </Link>
-            <div className="flex items-center gap-3">
-              <Link href="/about" className="text-sm font-medium text-zinc-700">
-                About Us
-              </Link>
-              <Link
-                href="/add"
-                className="rounded-xl border border-orange-200 bg-orange-50 px-3 py-1.5 text-sm font-medium text-orange-700 hover:bg-orange-100"
-              >
-                বিড়ানির খবর দিন
-              </Link>
-            </div>
-          </div>
-        </header>
-        <main className="mx-auto max-w-5xl px-4 py-6">{children}</main>
+      <body className="min-h-screen">
+        <SiteHeader />
+        <main className="mx-auto max-w-5xl px-3 py-4 md:px-4 md:py-6">{children}</main>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       </body>
     </html>
