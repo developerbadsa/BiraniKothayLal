@@ -5,13 +5,13 @@ import { env } from "@/lib/env";
 import { SiteHeader } from "@/components/SiteHeader";
 
 export const metadata: Metadata = {
-  title: "BiraniKothayLal",
-  description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা birani dibe lalmonirhat er khabar birani kothay lalmonirhat iftar birani news",
+  title: "PetrolKoiLal",
+  description: "লালমনিরহাটের মানুষে মিলে পেট্রোল/ডিজেল পাম্পের খবর",
   metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
   alternates: {
     canonical: "/",
   },
-  keywords: ["BiraniKothayLal", "Lalmonirhat", "Iftar", "Sehri", "Mosque", "Bangladesh", "Community Vote", "Ramadan"],
+  keywords: ["PetrolKoiLal", "Lalmonirhat", "Petrol", "Diesel", "Station", "Bangladesh", "Community Vote", "Fuel"],
   robots: {
     index: true,
     follow: true,
@@ -22,17 +22,17 @@ export const metadata: Metadata = {
     apple: "/logo.png",
   },
   openGraph: {
-    siteName: "BiraniKothayLal",
-    title: "BiraniKothayLal",
-    description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
+    siteName: "PetrolKoiLal",
+    title: "PetrolKoiLal",
+    description: "লালমনিরহাটের মানুষে মিলে পেট্রোল/ডিজেল পাম্পের খবর",
     url: env.NEXT_PUBLIC_APP_URL,
     type: "website",
-    images: [{ url: "/logo.png", width: 512, height: 512, alt: "BiraniKothayLal" }],
+    images: [{ url: "/logo.png", width: 512, height: 512, alt: "PetrolKoiLal" }],
   },
   twitter: {
     card: "summary",
-    title: "BiraniKothayLal",
-    description: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
+    title: "PetrolKoiLal",
+    description: "লালমনিরহাটের মানুষে মিলে পেট্রোল/ডিজেল পাম্পের খবর",
     images: ["/logo.png"],
   },
 };
@@ -44,12 +44,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     "@graph": [
       {
         "@type": "Organization",
-        name: "BiraniKothayLal",
+        name: "PetrolKoiLal",
         url: env.NEXT_PUBLIC_APP_URL,
       },
       {
         "@type": "WebSite",
-        name: "BiraniKothayLal",
+        name: "PetrolKoiLal",
         url: env.NEXT_PUBLIC_APP_URL,
       },
     ],

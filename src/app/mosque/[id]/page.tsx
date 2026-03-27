@@ -13,13 +13,13 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const mosque = await Mosque.findById(id).lean();
   if (!mosque) return { title: "খুঁজে পাওয়া যায় নাই" };
 
-  const title = `${mosque.name} - BiraniKothayLal (Lalmonirhat)`;
+  const title = `${mosque.name} - PetrolKoiLal (Lalmonirhat)`;
   const description = `${mosque.area} এলাকার কমিউনিটি রিপোর্ট`;
   return {
     title,
     description,
-    alternates: { canonical: `${env.NEXT_PUBLIC_APP_URL}/mosque/${id}` },
-    openGraph: { title, description, siteName: "BiraniKothayLal" },
+    alternates: { canonical: `${env.NEXT_PUBLIC_APP_URL}/station/${id}` },
+    openGraph: { title, description, siteName: "PetrolKoiLal" },
   };
 }
 
@@ -37,7 +37,7 @@ export default async function MosqueDetail({ params }: { params: Promise<{ id: s
     name: mosque.name,
     address: mosque.address,
     geo: { "@type": "GeoCoordinates", latitude: lat, longitude: lng },
-    url: `${env.NEXT_PUBLIC_APP_URL}/mosque/${id}`,
+    url: `${env.NEXT_PUBLIC_APP_URL}/station/${id}`,
   };
 
   return (
@@ -47,7 +47,7 @@ export default async function MosqueDetail({ params }: { params: Promise<{ id: s
         {mosque.area} · {mosque.address || "-"}
       </p>
       <div className="rounded-2xl border border-orange-100 bg-white p-4 shadow-soft">
-        <p>আছে: {mosque.aggregates.yesCount} | নাই: {mosque.aggregates.noCount}</p>
+        <p>তেল আছে: {mosque.aggregates.yesCount} | তেল নাই: {mosque.aggregates.noCount}</p>
         <p>ভরসার মান: {(mosque.aggregates.confidenceScore * 100).toFixed(1)}%</p>
         <p>শেষ খবর: {formatTime(mosque.aggregates.lastVotedAt)}</p>
       </div>
@@ -57,7 +57,7 @@ export default async function MosqueDetail({ params }: { params: Promise<{ id: s
         <ul className="space-y-1 text-sm text-zinc-600">
           {votes.map((v) => (
             <li key={v._id.toString()}>
-              {v.voteType === "YES" ? "আছে" : "নাই"} · {formatTime(v.createdAt)}
+              {v.voteType === "YES" ? "তেল আছে" : "তেল নাই"} · {formatTime(v.createdAt)}
             </li>
           ))}
         </ul>

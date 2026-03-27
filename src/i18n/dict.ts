@@ -9,17 +9,17 @@ export const areas = [
 ] as const;
 
 const common = {
-  appName: "BiraniKothayLal",
-  tagline: "লালমনিরহাটের মানুষে মিলে ইফতার/বিরানি খবরের খাতা",
-  addMosque: "লোকেশন যোগ দাও",
+  appName: "PetrolKoiLal",
+  tagline: "লালমনিরহাটের মানুষে মিলে পেট্রোল/ডিজেল পাম্পের লাইভ খবর",
+  addMosque: "স্টেশন যোগ দাও",
   about: "এই সাইটের কথা",
-  search: "মসজিদের নাম, ঠিকানা, এলাকা লিখো",
+  search: "পাম্প/স্টেশনের নাম, ঠিকানা, এলাকা লিখো",
   allAreas: "সব এলাকা",
   list: "তালিকা",
   map: "ম্যাপ",
   trending: "চলতি খবর",
-  yes: "আছে",
-  no: "নাই",
+  yes: "তেল আছে",
+  no: "তেল নাই",
   openMaps: "গুগল ম্যাপে খুলো",
   lastReport: "শেষ খবর",
   confidence: "ভরসার মান",

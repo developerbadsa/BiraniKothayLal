@@ -13,7 +13,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   const mosqueRoutes = mosques.map((m) => ({
-    url: `${env.NEXT_PUBLIC_APP_URL}/mosque/${m._id.toString()}`,
+    url: `${env.NEXT_PUBLIC_APP_URL}/station/${m._id.toString()}`,
     lastModified: m.updatedAt,
   }));
 

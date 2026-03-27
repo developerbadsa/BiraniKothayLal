@@ -1,12 +1,12 @@
-# BiraniKothayLal
+# PetrolKoiLal
 
-Community iftar/biriyani tracker for Lalmonirhat built with Next.js App Router, TypeScript, Tailwind CSS, MongoDB Atlas, and Mongoose.
+Community petrol/diesel station tracker for Lalmonirhat built with Next.js App Router, TypeScript, Tailwind CSS, MongoDB Atlas, and Mongoose.
 
 ## Features
 - Anonymous voting with hashed voter key (`sha256(IP + userAgent + salt)`), no raw IP storage
-- Public mosque submission with anti-spam submission limit
+- Public station submission with anti-spam submission limit
 - List/Map/Trending home sections
-- Mosque details with recent reports and confidence score
+- Station details with recent reports and confidence score
 - SEO metadata, OpenGraph, JSON-LD, robots, sitemap
 - Optional daily reset endpoint + script
 
@@ -39,9 +39,9 @@ npm run reset:daily
 - In cron provider, schedule at 9PM Asia/Dhaka and run a secure POST request.
 
 ## API Summary
-- `GET /api/mosques?query=&area=&limit=&page=`
-- `GET /api/mosques/[id]`
-- `POST /api/mosques`
-- `POST /api/mosques/[id]/vote`
+- `GET /api/stations?query=&area=&limit=&page=`
+- `GET /api/stations/[id]`
+- `POST /api/stations`
+- `POST /api/stations/[id]/vote`
 - `GET /api/trending?hours=6`
 - `POST /api/admin/run-daily-reset`
