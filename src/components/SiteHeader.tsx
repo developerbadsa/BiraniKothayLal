@@ -24,7 +24,7 @@ export function SiteHeader() {
             <Image
               src={logo}
               className={`transition-all duration-200 ${compact ? "w-[72px] md:w-[116px]" : "w-[84px] md:w-[130px]"}`}
-              alt="BiraniKothayLal Logo"
+              alt="PetrolKoiLal Logo"
               width={130}
               height={0}
             />
@@ -36,7 +36,7 @@ export function SiteHeader() {
                 compact ? "px-2 py-1 text-[11px] md:text-xs" : "px-2.5 py-1.5 text-xs md:text-sm"
               }`}
             >
-              About Us
+              আমাদের কথা
             </Link>
             <Link
               href="/add"
@@ -44,7 +44,7 @@ export function SiteHeader() {
                 compact ? "px-2 py-1 text-[11px] md:text-xs" : "px-2.5 py-1.5 text-xs md:px-3 md:text-sm"
               }`}
             >
-              বিড়ানির খবর দিন
+              পাম্প যোগ করুন
             </Link>
           </div>
         </div>

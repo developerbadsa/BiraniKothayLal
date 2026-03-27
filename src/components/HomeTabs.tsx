@@ -137,7 +137,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
         <div className="relative md:col-span-2">
           <div className="flex flex-col gap-2 rounded-2xl border border-orange-200 bg-orange-50/70 p-1.5 sm:flex-row sm:items-center">
             <input
-              aria-label="মসজিদ খোঁজ"
+              aria-label="স্টেশন খোঁজ"
               value={query}
               onFocus={() => setShowSuggestions(true)}
               onBlur={() => setTimeout(() => setShowSuggestions(false), 120)}
@@ -190,7 +190,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
 
       <div className="grid gap-2 sm:grid-cols-3 md:gap-3">
         <div className="rounded-2xl border border-orange-200 bg-orange-50/80 p-4">
-          <p className="text-xs font-semibold tracking-wide text-orange-700">কয় জায়জায় বিরানি আছে</p>
+          <p className="text-xs font-semibold tracking-wide text-orange-700">কয় জায়গায় তেল আছে</p>
           <p className="mt-1 text-2xl font-extrabold text-orange-900">{filtered.length}</p>
         </div>
         <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4">
@@ -198,7 +198,7 @@ export function HomeTabs({ mosques, trending, t }: Props) {
           <p className="mt-1 text-2xl font-extrabold text-zinc-900">{uniqueAreas}</p>
         </div>
         <div className="rounded-2xl border border-stone-200 bg-stone-50 p-4">
-          <p className="text-xs font-semibold tracking-wide text-stone-700">চলতি আইটেম</p>
+          <p className="text-xs font-semibold tracking-wide text-stone-700">চলতি রিপোর্ট</p>
           <p className="mt-1 text-2xl font-extrabold text-stone-900">{trendingTotal}</p>
         </div>
       </div>

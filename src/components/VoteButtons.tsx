@@ -11,7 +11,7 @@ export function VoteButtons({ mosqueId, compact = false }: Props) {
   const [message, setMessage] = useState("");
 
   const vote = async (voteType: "YES" | "NO") => {
-    const res = await fetch(`/api/mosques/${mosqueId}/vote`, {
+    const res = await fetch(`/api/stations/${mosqueId}/vote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ voteType }),
@@ -38,10 +38,10 @@ export function VoteButtons({ mosqueId, compact = false }: Props) {
     <div className="space-y-2">
       <div className="grid grid-cols-2 gap-2">
         <button className={`${buttonClass} bg-orange-600 hover:bg-orange-700`} onClick={() => vote("YES")}>
-          আছে
+          তেল আছে
         </button>
         <button className={`${buttonClass} bg-zinc-700 hover:bg-zinc-800`} onClick={() => vote("NO")}>
-          নাই
+          তেল নাই
         </button>
       </div>
       {message && <p className="text-xs text-zinc-600">{message}</p>}

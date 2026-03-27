@@ -12,8 +12,8 @@ const BANGLADESH_BOUNDS: [[number, number], [number, number]] = [
   [26.9, 92.8],
 ];
 
-const biraniMarkerIcon = divIcon({
-  html: '<span style="position:relative;display:inline-flex;height:40px;width:40px;align-items:center;justify-content:center;border-radius:9999px;background:#ffffff;border:3px solid #f97316;box-shadow:0 8px 18px rgba(249,115,22,0.35);font-size:18px;"><span style="position:absolute;inset:-7px;border-radius:9999px;border:2px solid rgba(249,115,22,0.35);"></span>&#x1F35B;</span>',
+const stationMarkerIcon = divIcon({
+  html: '<span style="position:relative;display:inline-flex;height:40px;width:40px;align-items:center;justify-content:center;border-radius:9999px;background:#ffffff;border:3px solid #f97316;box-shadow:0 8px 18px rgba(249,115,22,0.35);font-size:18px;"><span style="position:absolute;inset:-7px;border-radius:9999px;border:2px solid rgba(249,115,22,0.35);"></span>&#x26FD;</span>',
   className: "",
   iconAnchor: [20, 20],
   popupAnchor: [0, -18],
@@ -78,12 +78,12 @@ export function MapView({ mosques }: { mosques: MosqueItem[] }) {
           />
         ))}
         {validMosques.map((m) => (
-          <Marker key={m._id} position={[m.location.coordinates[1], m.location.coordinates[0]]} icon={biraniMarkerIcon}>
+          <Marker key={m._id} position={[m.location.coordinates[1], m.location.coordinates[0]]} icon={stationMarkerIcon}>
             <Popup>
               <div className="space-y-1">
                 <p className="font-semibold">{m.name}</p>
                 <p className="text-xs">{m.area}</p>
-                <Link href={`/mosque/${m._id}`} className="text-sm text-orange-700 underline">
+                <Link href={`/station/${m._id}`} className="text-sm text-orange-700 underline">
                   {"\u09ac\u09bf\u09b8\u09cd\u09a4\u09be\u09b0\u09bf\u09a4\u0020\u0986\u09b0\u0020\u09ad\u09cb\u099f"}
                 </Link>
               </div>

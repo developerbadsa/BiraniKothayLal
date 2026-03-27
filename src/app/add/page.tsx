@@ -171,7 +171,7 @@ export default function AddPage() {
       lng,
     };
 
-    const res = await fetch("/api/mosques", {
+    const res = await fetch("/api/stations", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -190,9 +190,9 @@ export default function AddPage() {
 
   return (
     <div className="space-y-4">
-      <h1 className="text-2xl font-semibold">লোকেশন যোগ দেও</h1>
+      <h1 className="text-2xl font-semibold">স্টেশন লোকেশন যোগ দেও</h1>
       <form className="space-y-4 rounded-2xl border border-orange-100 bg-white p-4 shadow-soft" onSubmit={onSubmit}>
-        <input className="w-full rounded-xl border border-zinc-200 p-2" name="name" required minLength={3} maxLength={80} placeholder="মসজিদের নাম" />
+        <input className="w-full rounded-xl border border-zinc-200 p-2" name="name" required minLength={3} maxLength={80} placeholder="পাম্প/স্টেশনের নাম" />
         <select className="w-full rounded-xl border border-zinc-200 p-2" name="area" required value={selectedArea} onChange={(e) => setSelectedArea(e.target.value)}>
           <option value="" disabled>
             এলাকা জানান
@@ -254,7 +254,7 @@ export default function AddPage() {
         </div>
 
         <p className="text-sm text-zinc-600">{coordinateText}</p>
-        <p className="text-xs text-zinc-500">টিপস: ম্যাপে ক্লিক বা পিন টেনে মসজিদের গেইটের কাছে পিন বসাও।</p>
+        <p className="text-xs text-zinc-500">টিপস: ম্যাপে ক্লিক বা পিন টেনে পাম্পের গেইটের কাছে পিন বসাও।</p>
 
         <DynamicMapPicker
           lat={lat}
@@ -274,7 +274,7 @@ export default function AddPage() {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
           <div className="w-full max-w-sm rounded-2xl border border-orange-200 bg-white p-5 text-center shadow-xl">
             <p className="text-lg font-bold text-orange-700">সফল হয়েছে</p>
-            <p className="mt-2 text-sm text-zinc-700">মসজিদের লোকেশন যোগ হয়েছে। হোম পেজে নেওয়া হচ্ছে...</p>
+            <p className="mt-2 text-sm text-zinc-700">স্টেশনের লোকেশন যোগ হয়েছে। হোম পেজে নেওয়া হচ্ছে...</p>
           </div>
         </div>
       )}

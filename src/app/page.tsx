@@ -39,15 +39,15 @@ export default async function HomePage() {
     { label: "পাওয়া জায় এমন এলাকা", value: new Set(mosques.map((m) => m.area)).size.toString() },
   ];
 
-  const jsonLd = { "@context": "https://schema.org", "@type": "WebPage", name: "BiraniKothayLal", url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000" };
+  const jsonLd = { "@context": "https://schema.org", "@type": "WebPage", name: "PetrolKoiLal", url: process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000" };
 
   return (
     <div className="space-y-4 md:space-y-6">
       <section className="overflow-hidden rounded-2xl border border-orange-200 bg-gradient-to-br from-stone-100 via-orange-50 to-amber-50 p-4 text-zinc-900 shadow-lg md:rounded-3xl md:p-7 md:shadow-xl">
         <p className="mb-2 inline-flex rounded-full border border-orange-200 bg-white px-3 py-1 text-xs font-semibold tracking-wide text-orange-700">কমিউনিটি লাইভ খবর</p>
-        <h1 className="text-2xl font-extrabold leading-tight md:text-4xl">আজক্যা কোটে বিরানি/ইফতার দেবে</h1>
+        <h1 className="text-2xl font-extrabold leading-tight md:text-4xl">আজ কোথায় পেট্রোল/ডিজেল পাওয়া যাচ্ছে</h1>
         <p className="mt-2 max-w-3xl text-sm text-zinc-700 md:mt-3 md:text-base">
-          তাড়াতাড়ি উকট্যাঁন,নিচে সব রিপোর্ট দেখো, ভোট দাও, আর ম্যাপে গিয়ে লোকেশন মিলি নেও।
+          নিচে সব স্টেশনের রিপোর্ট দেখো, ভোট দাও, আর ম্যাপে গিয়ে কাছের পাম্প মিলিয়ে নাও।
         </p>
         <div className="mt-4 grid grid-cols-2 gap-2.5 md:mt-5 md:grid-cols-3 md:gap-3">
           {stats.map((item) => (
@@ -62,8 +62,8 @@ export default async function HomePage() {
       <section className="rounded-2xl border border-orange-100 bg-white p-3 shadow-md md:rounded-3xl md:p-6 md:shadow-lg">
         <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="text-xl font-bold text-zinc-900">লাইভে উকট্যাঁন</h2>
-            <p className="text-sm text-zinc-600">প্রতি মসজিদের ভোট অবস্থা, বিরানি থাকার মান আর দ্রুত কাজ - সব একজায়গায়।</p>
+            <h2 className="text-xl font-bold text-zinc-900">লাইভ স্টেশন আপডেট</h2>
+            <p className="text-sm text-zinc-600">প্রতি স্টেশনের ভোট অবস্থা, তেল থাকার সম্ভাবনা আর আপডেট - সব একজায়গায়।</p>
           </div>
         </div>
         <HomeTabs mosques={JSON.parse(JSON.stringify(mosques))} trending={JSON.parse(JSON.stringify(trending))} t={t} />

@@ -21,7 +21,7 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
       <div className="flex items-start justify-between gap-2.5">
         <div>
           <p className="mb-1.5 inline-flex rounded-full bg-orange-50 px-2 py-0.5 text-[10px] font-semibold text-orange-700">কমিউনিটি যাচাই</p>
-          <Link className="line-clamp-2 text-base font-bold leading-snug text-zinc-900 hover:text-orange-700 hover:underline" href={`/mosque/${mosque._id}`}>
+          <Link className="line-clamp-2 text-base font-bold leading-snug text-zinc-900 hover:text-orange-700 hover:underline" href={`/station/${mosque._id}`}>
             {mosque.name}
           </Link>
           <p className="mt-0.5 text-sm font-medium text-zinc-600">{mosque.area}</p>
@@ -64,13 +64,13 @@ export function MosqueCard({ mosque, yesLabel, noLabel, openMapsLabel, lastRepor
         >
           {openMapsLabel}
         </a>
-        <Link className="inline-flex min-h-9 items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-orange-700" href={`/mosque/${mosque._id}`}>
+        <Link className="inline-flex min-h-9 items-center justify-center rounded-lg bg-orange-600 px-3 py-2 text-xs font-semibold text-white transition hover:bg-orange-700" href={`/station/${mosque._id}`}>
           বিস্তারিত দেখো
         </Link>
       </div>
 
       <div className="mt-3 border-t border-zinc-100 pt-3">
-        <p className="mb-2 text-[11px] font-semibold text-zinc-500">এই লোকেশনে বিরানি আছে নাকি?</p>
+        <p className="mb-2 text-[11px] font-semibold text-zinc-500">এই স্টেশনে তেল আছে নাকি?</p>
         <VoteButtons mosqueId={mosque._id.toString()} compact />
       </div>
     </article>
